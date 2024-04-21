@@ -1,0 +1,41 @@
+openapi: 3.0.0
+info:
+  title: Currency Converter API
+  version: 1.0.0
+  description: This is a simple currency converter API
+  contact:
+    name: Yusuf Murodov
+    email: yusuf.murodov1@gmail.com
+
+servers:
+  - url: /currency/
+
+paths:
+  /convert:
+    post:
+      tags:
+          - conversion
+      operationId: convert
+      summary: Convert some amount from one currency to another
+      description: Convert amount between two currencies
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: schemas/dto/conversion-request.json
+      responses:
+        '200':
+          description: Successful conversion
+          content:
+            application/json:
+              schema:
+                $ref: schemas/dto/conversion-response.json
+              example:
+                $ref: examples/dto/conversion-response.json
+        '400':
+          $ref: examples/error/badRequestErrorResponse.json
+        '401':
+          $ref: examples/error/unauthorizedErrorResponse.json
+        '500':
+          $ref: examples/error/internalErrorResponse.json

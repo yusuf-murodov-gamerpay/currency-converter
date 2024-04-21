@@ -1,0 +1,29 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Conversion Request Schema",
+  "description": "The conversion request consists of from, to and amount",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "from": {
+      "type": "string",
+      "description": "The currency code to convert from",
+      "example": "EUR"
+    },
+    "to": {
+      "type": "string",
+      "description": "The currency code to convert to",
+      "example": "USD"
+    },
+    "amount": {
+      "type": "number",
+      "description": "The amount to convert",
+      "example": "3.14"
+    }
+  },
+  "required": [
+    "from",
+    "to",
+    "convert"
+  ]
+}

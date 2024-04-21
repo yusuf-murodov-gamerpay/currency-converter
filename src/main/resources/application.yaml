@@ -1,0 +1,14 @@
+spring.application.name: currency-converter
+
+application.exchange:
+  client:
+    properties:
+      connection-timeout: 5000
+      read-timeout: 5000
+      response-timeout: 5000
+      write-timeout: 5000
+    private-provider:
+        url: ${EXCHANGE_RATE_API_URL:https://api.exchangeratesapi.io/latest}
+        apiKey: ${EXCHANGE_RATE_API_KEY:4c7c3a0ab1471eaf3b1099ae04ee3d28}
+    public-provider:
+        url: ${FREE_EXCHANGE_RATE_API_URL:https://api.exchangerate-api.com/v4/latest}
