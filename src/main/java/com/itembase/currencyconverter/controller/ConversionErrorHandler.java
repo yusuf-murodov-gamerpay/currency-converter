@@ -1,5 +1,6 @@
 package com.itembase.currencyconverter.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.itembase.currencyconverter.domain.dto.Error;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,18 @@ public class ConversionErrorHandler {
     public ResponseEntity<Error> handleIllegalStateException(final IllegalStateException exception) {
         return ResponseEntity.status(INTERNAL_SERVER_ERROR)
                 .body(buildErrorResponse(INTERNAL_SERVER_ERROR.value(), exception.getMessage(), exception));
+    }
+
+    @ExceptionHandler(JsonProcessingException.class)
+    public ResponseEntity<Error> handleJsonProcessingException(final JsonProcessingException exception) {
+        return ResponseEntity.status(BAD_REQUEST)
+                .body(buildErrorResponse(BAD_REQUEST.value(), exception.getMessage(), exception));
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Error> handleException(final Exception exception) {
+        return ResponseEntity.status(INTERNAL_SERVER_ERROR)
+                .body(buildErrorResponse(INTERNAL_SERVER_ERROR.value(), INTERNAL_ERROR_KEY, exception));
     }
 
     private Error buildErrorResponse(final int status, final String message, final Exception exception) {

@@ -1,46 +1,43 @@
 package com.itembase.currencyconverter.client;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.itembase.currencyconverter.constant.ExchangeRateConstant;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.util.UriBuilder;
 import reactor.core.publisher.Mono;
 
-@Component
-@RequiredArgsConstructor
-@Slf4j
-public class PrivateExchangeRateProvider implements ExchangeRateProvider {
-    private final WebClient privateExchangeRateProviderWebClient;
+import java.net.URI;
 
-    @Override
-    public Mono<Double> getExchangeRate(final String base, final String convertTo) {
-        log.debug("Fetching exchange rate for {} to {}", base, convertTo);
-        return privateExchangeRateProviderWebClient.get()
-                .uri(uriBuilder -> uriBuilder
-                        .queryParam("base", base)
-                        .queryParam("symbols", convertTo)
-                        .build())
-                .retrieve()
-                .bodyToMono(JsonNode.class)
-                .flatMap(response -> processResponse(response, convertTo))
-                .onErrorResume(JsonProcessingException.class, this::handleJsonProcessingException);
+import static java.util.Objects.isNull;
+
+@Component
+@Slf4j
+public class PrivateExchangeRateProvider extends ExchangeRateProvider {
+
+    public PrivateExchangeRateProvider(WebClient privateExchangeRateProviderWebClient) {
+        super(privateExchangeRateProviderWebClient);
     }
 
-    private Mono<Double> processResponse(final JsonNode response, final String convertTo) {
+    @Override
+    protected URI getExchangeRateUri(final UriBuilder uriBuilder, final String base, final String convertTo) {
+        return uriBuilder.queryParam("base", base).queryParam("symbols", convertTo).build();
+    }
+
+    @Override
+    protected Mono<Double> processResponse(final JsonNode response, final String convertTo) {
         if (isSuccessResponse(response)) {
             return Mono.just(getRateValue(response, convertTo));
-        } else {
-            log.error("Error while fetching exchange rate for {}", convertTo);
-            return Mono.error(new IllegalArgumentException("Error while fetching exchange rate for " + convertTo));
         }
+        final String errorMessage = "Error while fetching exchange rate for " + convertTo;
+        log.error(errorMessage);
+        return Mono.error(new IllegalArgumentException(errorMessage));
     }
 
     private double getRateValue(final JsonNode response, final String convertTo) {
         final JsonNode rate = response.get(ExchangeRateConstant.RATES_FIELD).get(convertTo);
-        if(rate.isNull() || rate.isEmpty()) {
+        if(isNull(rate) || rate.isNull() || !rate.isNumber()) {
             throw new IllegalArgumentException("No rate found for " + convertTo);
         }
         return rate.asDouble();
@@ -48,10 +45,5 @@ public class PrivateExchangeRateProvider implements ExchangeRateProvider {
 
     private boolean isSuccessResponse(final JsonNode response) {
         return response.path(ExchangeRateConstant.SUCCESS_FIELD).asBoolean();
-    }
-
-    private Mono<Double> handleJsonProcessingException(JsonProcessingException e) {
-        log.error("Error while processing response", e);
-        return Mono.error(new IllegalStateException("Error while processing response", e));
     }
 }
