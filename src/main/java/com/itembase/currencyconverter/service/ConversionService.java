@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -29,7 +30,7 @@ public class ConversionService {
     }
 
     private Mono<ConversionResponse> convertAmountByRandomProvider(final List<ExchangeRateProvider> providers,
-                                                                  final ConversionRequest conversionRequest,
+                                                                   final ConversionRequest conversionRequest,
                                                                    final int providerIndex) {
         if (providerIndex >= providers.size()) {
             return Mono.error(new IllegalStateException("No exchange rate provider available"));
@@ -43,11 +44,14 @@ public class ConversionService {
     }
 
     private Mono<ConversionResponse> calculate(final ConversionRequest conversionRequest, final double rate) {
-        final double convertedAmount = conversionRequest.getAmount().doubleValue() * rate;
+        final BigDecimal convertedAmount = conversionRequest.getAmount()
+                .multiply(BigDecimal.valueOf(rate))
+                .setScale(2, RoundingMode.HALF_UP);
+
         return Mono.just(new ConversionResponse()
                 .from(conversionRequest.getFrom())
                 .to(conversionRequest.getTo())
                 .amount(conversionRequest.getAmount())
-                .converted(BigDecimal.valueOf(convertedAmount)));
+                .converted(convertedAmount));
     }
 }

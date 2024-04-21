@@ -19,7 +19,7 @@ public class PublicExchangeRateProvider implements ExchangeRateProvider {
     public Mono<Double> getExchangeRate(final String base, final String convertTo) {
         log.debug("Fetching exchange rate for {} to {}", base, convertTo);
         return publicExchangeRateProviderWebClient.get()
-                .uri(uriBuilder -> uriBuilder.path(base).build())
+                .uri(uriBuilder -> uriBuilder.path("/{currency}").build(base))
                 .retrieve()
                 .bodyToMono(JsonNode.class)
                 .flatMap(response -> processResponse(response, convertTo))

@@ -2,9 +2,6 @@ package com.itembase.currencyconverter.configuration;
 
 import com.itembase.currencyconverter.configuration.properties.ExchangeClientProperties;
 import io.netty.channel.ChannelOption;
-import io.netty.handler.ssl.SslContext;
-import io.netty.handler.ssl.SslContextBuilder;
-import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.handler.timeout.WriteTimeoutHandler;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -18,7 +15,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
 
-import javax.net.ssl.SSLException;
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
@@ -26,15 +22,10 @@ import java.util.concurrent.TimeUnit;
 @EnableConfigurationProperties(ExchangeClientProperties.class)
 public class ClientConfiguration {
 
-    private HttpClient httpClient(ExchangeClientProperties exchangeClientProperties) throws SSLException {
+    private HttpClient httpClient(ExchangeClientProperties exchangeClientProperties) {
         final ExchangeClientProperties.Properties properties = exchangeClientProperties.getProperties();
-        final SslContext sslContext = SslContextBuilder
-                .forClient()
-                .trustManager(InsecureTrustManagerFactory.INSTANCE)
-                .build();
 
         return HttpClient.create()
-                .secure(sslContextSpec -> sslContextSpec.sslContext(sslContext))
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, properties.getConnectionTimeout())
                 .responseTimeout(Duration.ofMillis(properties.getResponseTimeout()))
                 .doOnConnected(connection -> connection
@@ -43,8 +34,7 @@ public class ClientConfiguration {
     }
 
     @Bean
-    public WebClient publicExchangeRateProviderWebClient(ExchangeClientProperties exchangeClientProperties)
-            throws SSLException {
+    public WebClient publicExchangeRateProviderWebClient(ExchangeClientProperties exchangeClientProperties) {
 
         return WebClient.builder()
                 .clientConnector(new ReactorClientHttpConnector(httpClient(exchangeClientProperties)))
@@ -53,8 +43,7 @@ public class ClientConfiguration {
     }
 
     @Bean
-    public WebClient privateExchangeRateProviderWebClient(ExchangeClientProperties exchangeClientProperties)
-            throws SSLException {
+    public WebClient privateExchangeRateProviderWebClient(ExchangeClientProperties exchangeClientProperties) {
 
         return WebClient.builder()
                 .clientConnector(new ReactorClientHttpConnector(httpClient(exchangeClientProperties)))
