@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import static java.util.Objects.isNull;
+
 @Component
 @RequiredArgsConstructor
 @Slf4j
@@ -31,13 +33,13 @@ public class PublicExchangeRateProvider implements ExchangeRateProvider {
             return Mono.just(getRateValue(response, convertTo));
         } else {
             log.error("Error while fetching exchange rate for {}", convertTo);
-            return Mono.error(new IllegalStateException("Error while fetching exchange rate for " + convertTo));
+            return Mono.error(new IllegalArgumentException("Error while fetching exchange rate for " + convertTo));
         }
     }
 
     private double getRateValue(final JsonNode response, final String convertTo) {
         final JsonNode rate = response.get(ExchangeRateConstant.RATES_FIELD).get(convertTo);
-        if(rate.isNull() || rate.isEmpty()) {
+        if(isNull(rate) || rate.isEmpty()) {
             throw new IllegalArgumentException("No rate found for " + convertTo);
         }
         return rate.asDouble();

@@ -32,15 +32,21 @@ public class ConversionService {
     private Mono<ConversionResponse> convertAmountByRandomProvider(final List<ExchangeRateProvider> providers,
                                                                    final ConversionRequest conversionRequest,
                                                                    final int providerIndex) {
-        if (providerIndex >= providers.size()) {
-            return Mono.error(new IllegalStateException("No exchange rate provider available"));
-        }
-
         final ExchangeRateProvider provider = providers.get(providerIndex);
         log.debug("Convert amount using provider {}", provider.getClass().getSimpleName());
         return provider.getExchangeRate(conversionRequest.getFrom(), conversionRequest.getTo())
                 .flatMap(rate -> calculate(conversionRequest, rate))
-                .onErrorResume(e -> convertAmountByRandomProvider(providers, conversionRequest, providerIndex + 1));
+                .onErrorResume(e -> handleErrorWithFallback(providers, conversionRequest, providerIndex + 1, e));
+    }
+
+    private Mono<ConversionResponse> handleErrorWithFallback(final List<ExchangeRateProvider> providers,
+                                                             final ConversionRequest conversionRequest, final int index,
+                                                             final Throwable e) {
+        if(index >= providers.size()) {
+            log.error("Error while converting amount", e);
+            return Mono.error(e);
+        }
+        return convertAmountByRandomProvider(providers, conversionRequest, index);
     }
 
     private Mono<ConversionResponse> calculate(final ConversionRequest conversionRequest, final double rate) {

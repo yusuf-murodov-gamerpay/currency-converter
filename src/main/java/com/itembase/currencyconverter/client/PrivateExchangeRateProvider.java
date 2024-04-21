@@ -34,7 +34,7 @@ public class PrivateExchangeRateProvider implements ExchangeRateProvider {
             return Mono.just(getRateValue(response, convertTo));
         } else {
             log.error("Error while fetching exchange rate for {}", convertTo);
-            return Mono.error(new IllegalStateException("Error while fetching exchange rate for " + convertTo));
+            return Mono.error(new IllegalArgumentException("Error while fetching exchange rate for " + convertTo));
         }
     }
 
