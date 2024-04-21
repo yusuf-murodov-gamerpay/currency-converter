@@ -31,7 +31,7 @@ public class PrivateExchangeRateProvider implements ExchangeRateProvider {
 
     private Mono<Double> processResponse(final JsonNode response, final String convertTo) {
         if (isSuccessResponse(response)) {
-            return Mono.justOrEmpty(getRateValue(response, convertTo));
+            return Mono.just(getRateValue(response, convertTo));
         } else {
             log.error("Error while fetching exchange rate for {}", convertTo);
             return Mono.error(new IllegalStateException("Error while fetching exchange rate for " + convertTo));
@@ -39,8 +39,11 @@ public class PrivateExchangeRateProvider implements ExchangeRateProvider {
     }
 
     private double getRateValue(final JsonNode response, final String convertTo) {
-        final JsonNode rates = response.path(ExchangeRateConstant.RATES_FIELD);
-        return rates.path(convertTo).asDouble();
+        final JsonNode rate = response.get(ExchangeRateConstant.RATES_FIELD).get(convertTo);
+        if(rate.isNull() || rate.isEmpty()) {
+            throw new IllegalArgumentException("No rate found for " + convertTo);
+        }
+        return rate.asDouble();
     }
 
     private boolean isSuccessResponse(final JsonNode response) {

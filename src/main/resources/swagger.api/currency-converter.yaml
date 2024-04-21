@@ -34,8 +34,8 @@ paths:
               example:
                 $ref: examples/dto/conversion-response.json
         '400':
-          $ref: examples/error/badRequestErrorResponse.json
+          $ref: 'common-components.yaml#/components/responses/badRequestErrorResponse'
         '401':
-          $ref: examples/error/unauthorizedErrorResponse.json
+          $ref: 'common-components.yaml#/components/responses/unauthorizedErrorResponse'
         '500':
-          $ref: examples/error/internalErrorResponse.json
+          $ref: 'common-components.yaml#/components/responses/internalErrorResponse'

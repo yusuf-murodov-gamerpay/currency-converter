@@ -1,0 +1,39 @@
+openapi: 3.0.0
+info:
+  title: Currency converter common components
+  version: 1.0.0
+  description: Currency converter common components
+  contact:
+    name: Yusuf Murodov
+    email: yusuf.murodov1@gmail.com
+
+components:
+  schemas:
+    errorResponse:
+      $ref: 'schemas/error/error.json#/Error'
+
+  responses:
+    badRequestErrorResponse:
+      description: Bad request error response
+      content:
+        application/json:
+          example:
+            $ref: examples/error/badRequestErrorResponse.json
+          schema:
+            $ref: '#/components/schemas/errorResponse'
+    unauthorizedErrorResponse:
+      description: Unauthorized error response
+      content:
+        application/json:
+          example:
+            $ref: examples/error/unauthorizedErrorResponse.json
+          schema:
+            $ref: '#/components/schemas/errorResponse'
+    internalErrorResponse:
+      description: Internal error response
+      content:
+        application/json:
+          example:
+              $ref: examples/error/internalErrorResponse.json
+          schema:
+            $ref: '#/components/schemas/errorResponse'

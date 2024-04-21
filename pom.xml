@@ -19,6 +19,9 @@
 		<currency-converter.yaml.file>
 			${project.basedir}/src/main/resources/swagger.api/currency-converter.yaml
 		</currency-converter.yaml.file>
+		<common-components.yaml.file>
+			${project.basedir}/src/main/resources/swagger.api/common-components.yaml
+		</common-components.yaml.file>
 		<spring-cloud-contract-wiremock.version>4.0.1</spring-cloud-contract-wiremock.version>
 		<swagger-annotations.version>2.2.21</swagger-annotations.version>
 		<jackson-databind-nullable.version>0.2.6</jackson-databind-nullable.version>
@@ -61,13 +64,6 @@
 			<artifactId>lombok</artifactId>
 			<version>${lombok.version}</version>
 		</dependency>
-<!--		<dependency>-->
-<!--			<groupId>io.netty</groupId>-->
-<!--			<artifactId>netty-resolver-dns-native-macos</artifactId>-->
-<!--			<version>${io-netty-netty-resolver-dns-native-macos.version}</version>-->
-<!--			<scope>runtime</scope>-->
-<!--			<classifier>osx-aarch_64</classifier>-->
-<!--		</dependency>-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -129,7 +125,6 @@
 								<java8>true</java8>
 								<dateLibrary>java</dateLibrary>
 								<interfaceOnly>true</interfaceOnly>
-<!--								<useSpringBoot3>true</useSpringBoot3>-->
 							</configOptions>
 						</configuration>
 					</execution>
