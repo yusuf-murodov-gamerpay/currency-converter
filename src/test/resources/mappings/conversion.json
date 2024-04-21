@@ -1,0 +1,81 @@
+{
+  "mappings": [
+    {
+      "request": {
+        "method": "GET",
+        "url":"https://api.exchangeratesapi.io/latest?base=EUR&symbols=USD&access_key=1234567890"
+      },
+      "response": {
+        "status": 200,
+        "bodyFileName": "conversion/private/exchange_rate_response.json",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url":"https://api.exchangeratesapi.io/latest?base=EUR&symbols=USA&access_key=1234"
+      },
+      "response": {
+        "status": 200,
+        "bodyFileName": "conversion/private/no_exchange_rate_response.json",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url":"https://api.exchangeratesapi.io/latest?base=EUR&symbols=123124&access_key=1234"
+      },
+      "response": {
+        "status": 500,
+        "bodyFileName": "conversion/private/no_exchange_rate_response.json",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url":"https://api.exchangerate-api.com/v4/latest/USD"
+      },
+      "response": {
+        "status": 200,
+        "bodyFileName": "conversion/public/exchange_rate_response.json",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url":"https://api.exchangerate-api.com/v4/latest/USA"
+      },
+      "response": {
+        "status": 200,
+        "bodyFileName": "conversion/public/no_exchange_rate_response.json",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url":"https://api.exchangerate-api.com/v4/latest/123124"
+      },
+      "response": {
+        "status": 500,
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      }
+    }
+  ]
+}
