@@ -11,10 +11,8 @@ servers:
   - url: /currency/
 
 paths:
-  /convert:
+  /currency/convert:
     post:
-      tags:
-          - conversion
       operationId: convert
       summary: Convert some amount from one currency to another
       description: Convert amount between two currencies

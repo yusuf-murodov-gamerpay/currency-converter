@@ -2,7 +2,7 @@ package com.itembase.currencyconverter.controller;
 
 import com.itembase.currencyconverter.domain.dto.ConversionRequest;
 import com.itembase.currencyconverter.domain.dto.ConversionResponse;
-import com.itembase.currencyconverter.rest.resource.ConvertApi;
+import com.itembase.currencyconverter.rest.resource.CurrencyApi;
 import com.itembase.currencyconverter.service.ConversionService;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,7 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-public class ConversionController implements ConvertApi {
+public class ConversionController implements CurrencyApi {
     private final ConversionService conversionService;
 
     @Override

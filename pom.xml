@@ -24,6 +24,7 @@
 		</common-components.yaml.file>
 		<spring-cloud-contract-wiremock.version>4.0.1</spring-cloud-contract-wiremock.version>
 		<swagger-annotations.version>2.2.21</swagger-annotations.version>
+		<springdoc-swagger-ui.version>1.6.9</springdoc-swagger-ui.version>
 		<jackson-databind-nullable.version>0.2.6</jackson-databind-nullable.version>
 		<io-netty-netty-resolver-dns-native-macos.version>4.1.69.Final</io-netty-netty-resolver-dns-native-macos.version>
 		<lombok.version>1.18.32</lombok.version>
@@ -63,6 +64,16 @@
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<version>${lombok.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-webflux-ui</artifactId>
+			<version>${springdoc-swagger-ui.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-webflux-core</artifactId>
+			<version>${springdoc-swagger-ui.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
