@@ -1,0 +1,13 @@
+version: "3.9"
+services:
+  currency-converter:
+    image: currency-converter:latest
+    hostname: currency-converter
+    container_name: currency-converter
+    restart: always
+    ports:
+      - "8080:8081"
+    environment:
+      PRIVATE_EXCHANGE_RATE_API_URL: ${PRIVATE_EXCHANGE_RATE_API_URL}
+      PRIVATE_EXCHANGE_RATE_API_KEY: ${PRIVATE_EXCHANGE_RATE_API_KEY}
+      PUBLIC_EXCHANGE_RATE_API_URL: ${PUBLIC_EXCHANGE_RATE_API_URL}

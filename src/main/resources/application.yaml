@@ -9,7 +9,7 @@ application.exchange:
       response-timeout: 5000
       write-timeout: 5000
     private-provider:
-        url: ${EXCHANGE_RATE_API_URL:https://api.exchangeratesapi.io/latest}
-        api-key: ${EXCHANGE_RATE_API_KEY:4c7c3a0ab1471eaf3b1099ae04ee3d28}
+        url: ${PRIVATE_EXCHANGE_RATE_API_URL}
+        api-key: ${PRIVATE_EXCHANGE_RATE_API_KEY}
     public-provider:
-        url: ${FREE_EXCHANGE_RATE_API_URL:https://api.exchangerate-api.com/v4/latest}
+        url: ${PUBLIC_EXCHANGE_RATE_API_URL}

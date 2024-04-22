@@ -3,17 +3,18 @@ package com.itembase.currencyconverter.controller;
 import com.itembase.currencyconverter.BaseIntegrationTests;
 import com.itembase.currencyconverter.TestUtil;
 import com.itembase.currencyconverter.domain.dto.ConversionResponse;
-import com.itembase.currencyconverter.domain.dto.Error;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import static com.itembase.currencyconverter.TestConstants.*;
 import static org.hamcrest.Matchers.equalTo;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@TestPropertySource(value = "classpath:application.properties")
 class ConversionControllerTest extends BaseIntegrationTests {
     @Autowired
     private WebTestClient webTestClient;
